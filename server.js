@@ -1,5 +1,5 @@
 _.extend(Saasu, {
-    baseURL: 'https://secure.saasu.com/webservices/rest/r1/'
+    _baseURL: 'https://secure.saasu.com/webservices/rest/r1/'
 
     , _getAuthenticationString: function() {
         return 'wsaccesskey=' + this.accessKey + '&fileuid=' + this.fileId;
@@ -11,7 +11,6 @@ _.extend(Saasu, {
                 HTTP.call(method, url, options, function(err, res) {
                     cb(err, res);
                 });
-
             } else return HTTP.call(method, url, options);
 
         } catch (e) {
@@ -37,7 +36,7 @@ _.extend(Saasu, {
                 break;
         }
 
-        var url = Saasu.baseURL + query + Saasu._getAuthenticationString();
+        var url = Saasu._baseURL + query + Saasu._getAuthenticationString();
         return Saasu._sendRequest('GET', url, {params: options}, cb);
     }
 
@@ -62,7 +61,7 @@ _.extend(Saasu, {
         var xml = builder.buildObject(contentObj);
 
         // Send the request
-        var url = Saasu.baseURL + 'tasks?' + Saasu._getAuthenticationString();
+        var url = Saasu._baseURL + 'tasks?' + Saasu._getAuthenticationString();
         return Saasu._sendRequest('POST', url, {content: xml}, cb);
     }
 });
