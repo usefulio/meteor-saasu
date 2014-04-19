@@ -2,19 +2,17 @@
 
 ---
 
-The Saasu object provides the following methods:
+## Methods available on both client and server
 
-## Methods available on both client and server:
+* Saasu.init
+* Saasu.getInventoryItemUid
+* Saasu.getPaymentAccountUid
 
-* init
-* getInventoryItemUid
-* getPaymentAccountUid
+## Methods available on server
 
-## Methods available on server:
-
-* get
-* post
-* parseResponseToJSON
+* Saasu.get
+* Saasu.post
+* Saasu.parseResponseToJSON
 
 ## Examples
 
