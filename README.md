@@ -1,4 +1,4 @@
-# A collections of methods to interact with the [Saasu REST API](http://help.saasu.com/api/)
+# A collection of methods to interact with the [Saasu REST API](http://help.saasu.com/api/)
 
 ---
 
@@ -43,13 +43,79 @@ Saasu.init({
 });
 ```
 
+After these values are initialized, you can conveniently retrieve them with
+```javascript
+Saasu.getInventoryItemUid[itemName]
+Saasu.getPaymentAccountUid[accountName]
+```
+
 __Get contact from contactID__
 
-Meteor.call('/saasu/get', 'contact', {contactID: 'C1-1111'}, function(err, res) {
-    console.log( err || res );
+On server-side, you can call the method directly:
+
+```javascript
+var response = Saasu.get('contact', {contactID: 'C1-2345'});
+console.log( Saasu.parseResponseToJSON(response) );
+```
+
+To receive the result on client-side, define a Meteor method and call it with a callback:
+
+```javascript
+Meteor.methods({
+    'saasuGet': function(type, options) {
+        var response = Saasu.get(type, options);
+        return Saasu.parseResponseToJSON(response);
+    }
 });
+```
 
-var response = Saasu.get('contact', options);
-Saasu.parseResponseToJSON(response);
+```javascript
+Meteor.call('saasuGet', 'contact', {contactID: 'C1-2345'}, function(err, res) {
+    console.log( res );
+});
+```
 
+__Insert new contact__
+```javascript
+Saasu.post('contact', {
+    salutation: 'Mr'
+    , givenName: 'Phuc'
+    , familyName: 'Nguyen'
+    , organisationName: 'UsefulIO'
+    , contactID: 'C1-1234'
+});
+```
 
+__Insert new item sale__
+```javascript
+Saasu.post('invoice', {
+    transactionType: 'S'
+    , date: '2014-04-19'
+    , layout: 'I'
+    , status: 'I'
+    , purchaseOrderNumber: 'S1-1111'
+    , summary: 'Test item sale'
+    , invoiceItems: {
+        itemInvoiceItem: {
+            quantity: 1
+            , inventoryItemUid: Saasu.getInventoryItemUid('Item1')
+            , unitPriceInclTax: 150
+        }
+    }
+});
+```
+
+__Insert payment for sales__
+```javascript
+Saasu.post('invoicePayment', {
+    transactionType: 'SP'
+    , date: '2014-04-19'
+    , paymentAccountUid: Saasu.getPaymentAccountUid('Account1')
+    , invoicePaymentItems: {
+        invoicePaymentItem: {
+            invoiceUid: '123456'
+            , amount: '25'
+        }
+    }
+});
+```
