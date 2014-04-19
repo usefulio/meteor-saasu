@@ -1,0 +1,11 @@
+{
+    "name": "saasu",
+    "description": "A collection of methods to interact with the Saasu REST API",
+    "homepage": "https://github.com/usefulio/meteor-saasu",
+    "author": "Phuc Nguyen (https://github.com/usefulio)",
+    "version": "0.1.0",
+    "git": "https://github.com/usefulio/meteor-saasu.git",
+    "packages": {
+        "xml2js": {}
+    }
+}
