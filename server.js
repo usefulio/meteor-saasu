@@ -19,7 +19,7 @@ _.extend(Saasu, {
         }
     }
 
-    , parseResponseToJSON: function(response) {
+    , parseResponseToObj: function(response) {
         var result;
         response && xml2js.parseString(response.content, function(err, res) {
             if ( err ) throw new Meteor.Error(500, err.message);
@@ -43,7 +43,7 @@ _.extend(Saasu, {
     , post: function(type, info, cb) {
         // XXX Saasu only accepts 'contactID' as property name for the custom contact id
         if ( info.contactId ) info.contactID = info.contactId;
-        
+
         // The object used to generate xml
         var contentObj;
         switch (type) {

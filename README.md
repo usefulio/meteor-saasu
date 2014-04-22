@@ -12,7 +12,7 @@
 
 * Saasu.get
 * Saasu.post
-* Saasu.parseResponseToJSON
+* Saasu.parseResponseToObj
 
 ## Examples
 
@@ -53,7 +53,7 @@ On server-side, you can call the method directly:
 
 ```javascript
 var response = Saasu.get('contact', {contactID: 'C1-2345'});
-console.log( Saasu.parseResponseToJSON(response) );
+console.log( Saasu.parseResponseToObj(response) );
 ```
 
 To receive the result on client-side, define a Meteor method and call it with a callback:
@@ -62,7 +62,7 @@ To receive the result on client-side, define a Meteor method and call it with a 
 Meteor.methods({
     'saasuGet': function(type, options) {
         var response = Saasu.get(type, options);
-        return Saasu.parseResponseToJSON(response);
+        return Saasu.parseResponseToObj(response);
     }
 });
 ```
