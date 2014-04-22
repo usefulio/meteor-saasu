@@ -41,6 +41,9 @@ _.extend(Saasu, {
     }
 
     , post: function(type, info, cb) {
+        // XXX Saasu only accepts 'contactID' as property name for the custom contact id
+        if ( info.contactId ) info.contactID = info.contactId;
+        
         // The object used to generate xml
         var contentObj;
         switch (type) {
