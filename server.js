@@ -5,21 +5,17 @@ _.extend(Saasu, {
         return 'wsaccesskey=' + this.accessKey + '&fileuid=' + this.fileId;
     }
 
-    , _sendRequest: function(method, url, options, cb) {
+    , _sendRequest: function(method, query, options, cb) {
+        url = Saasu._baseURL + url + Saasu._getAuthenticationString()
         try {
-            if ( cb ) {
-                HTTP.call(method, url, options, function(err, res) {
-                    cb(err, res);
-                });
-            } else return HTTP.call(method, url, options);
-
+            HTTP.call(method, url, options, cb);
         } catch (e) {
             console.log('Error sending request to Saasu: ' + e.message);
             throw new Meteor.Error(500, e.message);
         }
     }
 
-    , parseResponseToObj: function(response) {
+    , parseResponse: function(response) {
         var result;
         response && xml2js.parseString(response.content, function(err, res) {
             if ( err ) throw new Meteor.Error(500, err.message);
@@ -36,8 +32,7 @@ _.extend(Saasu, {
                 break;
         }
 
-        var url = Saasu._baseURL + query + Saasu._getAuthenticationString();
-        return Saasu._sendRequest('GET', url, {params: options}, cb);
+        return Saasu._sendRequest('GET', query, {params: options}, cb);
     }
 
     , post: function(type, info, cb) {
@@ -64,7 +59,6 @@ _.extend(Saasu, {
         var xml = builder.buildObject(contentObj);
 
         // Send the request
-        var url = Saasu._baseURL + 'tasks?' + Saasu._getAuthenticationString();
-        return Saasu._sendRequest('POST', url, {content: xml}, cb);
+        return Saasu._sendRequest('POST', 'tasks?', {content: xml}, cb);
     }
 });
