@@ -6,9 +6,9 @@ _.extend(Saasu, {
     }
 
     , _sendRequest: function(method, query, options, cb) {
-        url = Saasu._baseURL + url + Saasu._getAuthenticationString()
+        var url = Saasu._baseURL + query + Saasu._getAuthenticationString();
         try {
-            HTTP.call(method, url, options, cb);
+            return HTTP.call(method, url, options, cb);
         } catch (e) {
             console.log('Error sending request to Saasu: ' + e.message);
             throw new Meteor.Error(500, e.message);
