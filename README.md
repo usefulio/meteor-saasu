@@ -2,25 +2,19 @@
 
 ---
 
-## Methods available on both client and server
+## Create a new instance
 
-* Saasu.init
-* Saasu.getInventoryItemUid
-* Saasu.getPaymentAccountUid
+You can have many different instances, each corresponds to a unique Saasu account.
 
-## Methods available on server
-
-* Saasu.get
-* Saasu.post
-* Saasu.parseResponse
-
-## Examples
+```javascript
+saasuAccount = new Saasu();
+```
 
 __Initialize Saasu key and file id__
 
 ```javascript
 if ( Meteor.isServer ) {
-    Saasu.init({
+    saasuAccount.init({
         accessKey: "YOUR_KEY"
         , fileId: "YOUR_FILEID"
     });
@@ -29,7 +23,7 @@ if ( Meteor.isServer ) {
 
 __Initialize inventory items and payment accounts UIDs__
 ```javascript
-Saasu.init({
+saasuAccount.init({
     inventoryItems: {
         "Item1": "UID_OF_ITEM"
         , "Item2": "UID_OF_ITEM"
@@ -43,17 +37,31 @@ Saasu.init({
 
 After these values are initialized, you can conveniently retrieve them with
 ```javascript
-Saasu.getInventoryItemUid[itemName]
-Saasu.getPaymentAccountUid[accountName]
+saasuAccount.getInventoryItemUid[itemName]
+saasuAccount.getPaymentAccountUid[accountName]
 ```
+
+## Methods available on both client and server
+
+* init
+* getInventoryItemUid
+* getPaymentAccountUid
+
+## Methods available on server
+
+* get
+* post
+* parseResponse
+
+## Examples
 
 __Get contact from contactID__
 
 On server-side, you can call the method directly:
 
 ```javascript
-var response = Saasu.get('contact', {contactID: 'C1-2345'});
-console.log( Saasu.parseResponse(response) );
+var response = saasuAccount.get('contact', {contactID: 'C1-2345'});
+console.log( saasuAccount.parseResponse(response) );
 ```
 
 To receive the result on client-side, define a Meteor method and call it with a callback:
@@ -61,8 +69,8 @@ To receive the result on client-side, define a Meteor method and call it with a 
 ```javascript
 Meteor.methods({
     'saasuGet': function(type, options) {
-        var response = Saasu.get(type, options);
-        return Saasu.parseResponse(response);
+        var response = saasuAccount.get(type, options);
+        return saasuAccount.parseResponse(response);
     }
 });
 ```
@@ -75,7 +83,7 @@ Meteor.call('saasuGet', 'contact', {contactID: 'C1-2345'}, function(err, res) {
 
 __Insert new contact__
 ```javascript
-Saasu.post('contact', {
+saasuAccount.post('contact', {
     salutation: 'Mr'
     , givenName: 'Phuc'
     , familyName: 'Nguyen'
@@ -86,7 +94,7 @@ Saasu.post('contact', {
 
 __Insert new item sale__
 ```javascript
-Saasu.post('invoice', {
+saasuAccount.post('invoice', {
     transactionType: 'S'
     , date: '2014-04-19'
     , layout: 'I'
@@ -105,7 +113,7 @@ Saasu.post('invoice', {
 
 __Insert payment for sales__
 ```javascript
-Saasu.post('invoicePayment', {
+saasuAccount.post('invoicePayment', {
     transactionType: 'SP'
     , date: '2014-04-19'
     , paymentAccountUid: Saasu.getPaymentAccountUid('Account1')

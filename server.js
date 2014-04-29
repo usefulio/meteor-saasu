@@ -1,4 +1,5 @@
-_.extend(Saasu, {
+_.extend(Saasu.prototype, {
+
     _baseURL: 'https://secure.saasu.com/webservices/rest/r1/'
 
     , _getAuthenticationString: function() {
@@ -6,7 +7,7 @@ _.extend(Saasu, {
     }
 
     , _sendRequest: function(method, query, options, cb) {
-        var url = Saasu._baseURL + query + Saasu._getAuthenticationString();
+        var url = this._baseURL + query + this._getAuthenticationString();
         try {
             return HTTP.call(method, url, options, cb);
         } catch (e) {
@@ -32,7 +33,7 @@ _.extend(Saasu, {
                 break;
         }
 
-        return Saasu._sendRequest('GET', query, {params: options}, cb);
+        return this._sendRequest('GET', query, {params: options}, cb);
     }
 
     , post: function(type, info, cb) {
@@ -59,6 +60,6 @@ _.extend(Saasu, {
         var xml = builder.buildObject(contentObj);
 
         // Send the request
-        return Saasu._sendRequest('POST', 'tasks?', {content: xml}, cb);
+        return this._sendRequest('POST', 'tasks?', {content: xml}, cb);
     }
 });
