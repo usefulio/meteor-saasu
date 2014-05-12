@@ -92,7 +92,7 @@ saasuAccount.post('contact', {
 });
 ```
 
-__Insert new item sale__
+__Insert new item sale (single item)__
 ```javascript
 saasuAccount.post('invoice', {
     transactionType: 'S'
@@ -107,6 +107,32 @@ saasuAccount.post('invoice', {
             , inventoryItemUid: Saasu.getInventoryItemUid('Item1')
             , unitPriceInclTax: 150
         }
+    }
+});
+```
+
+__Insert new item sale (multiple items)__
+```javascript
+saasuAccount.post('invoice', {
+    transactionType: 'S'
+    , date: '2014-04-19'
+    , layout: 'I'
+    , status: 'I'
+    , purchaseOrderNumber: 'S1-1111'
+    , summary: 'Test item sale'
+    , invoiceItems: {
+         itemInvoiceItem: [
+             {
+                 quantity: 1
+                 , inventoryItemUid: saasu.getInventoryItemUid('Item1')
+                 , unitPriceInclTax: 150
+             },
+             {
+                 quantity: 2
+                 , inventoryItemUid: saasu.getInventoryItemUid('Item2')
+                 , unitPriceInclTax: 250
+             }
+         ]
     }
 });
 ```
