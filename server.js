@@ -26,7 +26,14 @@ _.extend(Saasu.prototype, {
     }
 
     , get: function(type, options, cb) {
-        return this._sendRequest('GET', type + 'list?', {params: options}, cb);
+        var response = this._sendRequest('GET', type + 'list?', {params: options}, cb);
+
+        // Check for error
+        var responseObj = this.parseResponse(response);
+        var keyName = _.keys(responseObj)[0];
+        if ( responseObj[keyName].errors ) throw new Meteor.Error(500, responseObj[keyName].errors[0].error[0].message[0]);
+
+        return response;
     }
 
     , post: function(type, info, cb) {
@@ -53,6 +60,12 @@ _.extend(Saasu.prototype, {
         var xml = builder.buildObject(contentObj);
 
         // Send the request
-        return this._sendRequest('POST', 'tasks?', {content: xml}, cb);
+        var response = this._sendRequest('POST', 'tasks?', {content: xml}, cb);
+
+        // Check for error
+        var responseObj = this.parseResponse(response);
+        if ( responseObj.tasksResponse.errors ) throw new Meteor.Error(500, responseObj.tasksResponse.errors[0].error[0].message[0]);
+
+        return response;
     }
 });
