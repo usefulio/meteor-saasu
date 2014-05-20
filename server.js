@@ -26,14 +26,7 @@ _.extend(Saasu.prototype, {
     }
 
     , get: function(type, options, cb) {
-        var query;
-        switch (type) {
-            case 'contact':
-                query = 'contactlist?';
-                break;
-        }
-
-        return this._sendRequest('GET', query, {params: options}, cb);
+        return this._sendRequest('GET', type + 'list?', {params: options}, cb);
     }
 
     , post: function(type, info, cb) {
